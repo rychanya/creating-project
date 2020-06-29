@@ -2,6 +2,8 @@ import csv
 
 from django.shortcuts import render
 
+from .models import CSVPath, Columns
+
 
 CSV_FILENAME = 'phones.csv'
 COLUMNS = [
@@ -15,6 +17,7 @@ COLUMNS = [
 
 def table_view(request):
     template = 'table.html'
+    CSV_FILENAME = CSVPath.get_path()
     with open(CSV_FILENAME, 'rt') as csv_file:
         header = []
         table = []
@@ -28,7 +31,7 @@ def table_view(request):
                 table.append(row)
 
         context = {
-            'columns': COLUMNS, 
+            'columns': Columns.get_all_order_by_number(), 
             'table': table, 
             'csv_file': CSV_FILENAME
         }
